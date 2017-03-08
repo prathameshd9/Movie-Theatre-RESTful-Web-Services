@@ -1,0 +1,55 @@
+create database MoviePick;
+
+use MoviePick;
+
+drop table Movie
+
+/*TABLE Movie */
+CREATE TABLE Movie (movieId VARCHAR(10) NOT NULL, title VARCHAR(20) NOT NULL, genre VARCHAR(15), rating INT, PRIMARY KEY(movieId));
+ 
+ desc Movie;
+ 
+ /*TABLE Theatre */
+ CREATE TABLE Theatre (theatreId VARCHAR(10) NOT NULL, name VARCHAR(20) NOT NULL, address VARCHAR(50), PRIMARY KEY(theatreId));
+ 
+ desc Theatre;
+ 
+ /*TABLE MovieShowTimings */
+ CREATE TABLE MovieShowTimings (id VARCHAR(20) NOT NULL, theatreId VARCHAR(10), movieId VARCHAR(10), auditorium VARCHAR(50), showTimes VARCHAR(50),PRIMARY KEY(id), FOREIGN KEY(theatreId) REFERENCES Theatre(theatreId), FOREIGN KEY(movieId) REFERENCES Movie(movieId));
+ 
+ desc MovieShowTimings;
+ 
+ /*INSERT QUERIES*/
+ insert into Movie (movieId, title, genre, rating) values('M001', 'The Wolverine', 'action', 4.5);
+ insert into Movie (movieId, title, genre, rating) values('M002', 'Moana', 'comedy/family', 4.0);
+ insert into Movie (movieId, title, genre, rating) values('M003', 'Rings','horror', 4.5);
+ 
+ insert into Theatre (theatreId, name, address) values('T001', 'University 16', 'Eps Bridge');
+ insert into Theatre (theatreId, name, address) values('T002', 'Beechwood Cinemas', 'Beechwood');
+ insert into Theatre (theatreId, name, address) values('T003', 'Ovation 12', 'Lexington');
+
+
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(1, 'T001','M001', 'A1', '12 pm');
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(2, 'T001','M002', 'A2', '4 pm');
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(3, 'T001','M003', 'A3', '8 pm');
+
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(4, 'T002','M001', 'B1', '2 pm');
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(5, 'T002','M002', 'B2', '5 pm');
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(6, 'T002','M003', 'B3', '9 pm');
+
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(7, 'T003','M001', 'C1', '2 pm');
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(8, 'T003','M002', 'C2', '5 pm');
+insert into MovieShowTimings (id, theatreId, movieId, auditorium, showTimes) values(9, 'T003','M003', 'C3', '8 pm');
+
+
+select * from Movie;
+
+select * from Theatre;
+
+select * from MovieShowTimings;
+
+/*Sample query to get movies and theatres who start at 2pm*/
+select m.title,t.name
+from Movie m,Theatre t
+where m.movieId IN (select movieId from MovieShowTimings where showTimes='2 pm') AND
+	t.theatreId IN (select theatreId from MovieShowTimings where showTimes='2 pm');
